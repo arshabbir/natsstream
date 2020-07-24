@@ -1,4 +1,4 @@
-module github.com/arshabbir/natsstream/v1.0.0
+module github.com/arshabbir/natsstream
 
 go 1.14
 
