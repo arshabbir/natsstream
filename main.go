@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"runtime"
 	"time"
 
 	"github.com/arshabbir/natsstream/natstream"
@@ -10,6 +11,7 @@ import (
 
 func main() {
 
+	//wait := make(chan int)
 	os.Setenv("NATSCLUSTER", "test-cluster")
 
 	stream := natstream.NewMessageBroker()
@@ -21,12 +23,15 @@ func main() {
 
 	log.Println("Connection Successful")
 
-	if err := stream.Publish("testsubject", []byte("this is a test message")); err != nil {
-		log.Println("Error connecting to the event bus")
-		return
-	}
+	for i := 0; i < 10; i++ {
 
-	log.Println("Message Sent")
+		if err := stream.Publish("testsubject", []byte("this is a test message")); err != nil {
+			log.Println("Error connecting to the event bus")
+			return
+		}
+
+		log.Println("Message Sent", i)
+	}
 
 	//Client code
 
@@ -46,7 +51,10 @@ func main() {
 
 	})
 
-	time.Sleep(time.Second * 10)
+	//<-wait
 
-	return
+	time.Sleep(time.Second * 100)
+
+	runtime.Goexit()
+	//return
 }

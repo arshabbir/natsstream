@@ -30,6 +30,8 @@ func NewMessageBroker() EventBus {
 
 	clientId := fmt.Sprintf("client%d", rand.Intn(10000))
 
+	log.Println("NewMessageBroker : ", clientId)
+
 	if clusterId == "" {
 		log.Println("Set the Environment variable  NATSCLUSTER")
 		os.Exit(1)
@@ -67,6 +69,7 @@ func (e *eventBus) Publish(subject string, mesg []byte) *error {
 		if err != nil {
 			log.Println("Error getting ack for message id : ", id)
 		}
+		log.Println("Ack received : ", id)
 		return
 	})
 
@@ -83,12 +86,20 @@ func (e *eventBus) Publish(subject string, mesg []byte) *error {
 //simple(a func(a, b int) int)
 func (e *eventBus) Subscribe(subject string, handler func(data []byte)) *error {
 
+	log.Println("Durable ", e.clientId)
+
+	log.Println("Client Subject ", subject)
+
+	//log.Println("Client cluster ", )
+
 	e.scon.Subscribe(subject, func(mb *stan.Msg) {
-		handler(mb.Data)
 		mb.Ack()
+		log.Println("*****Invoked")
+		handler(mb.Data)
+
 		return
 	}, stan.DurableName(e.clientId),
-		stan.MaxInflight(250),
+		stan.MaxInflight(25),
 		stan.SetManualAckMode(),
 		stan.AckWait(time.Second*30))
 
