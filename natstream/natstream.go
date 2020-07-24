@@ -33,7 +33,7 @@ func NewMessageBroker() EventBus {
 	log.Println("NewMessageBroker : ", clientId)
 
 	if clusterId == "" {
-		log.Println("Set the Environment variable  NATSCLUSTER")
+		log.Println("Set the Environment variable  NATSCLUSTER ")
 		os.Exit(1)
 	}
 
