@@ -54,7 +54,7 @@ func (e *eventBus) Connect() *error {
 		stan.NatsURL(e.natURL),
 	)
 
-	log.Println("Trying to connect with ........", e.clusterId, e.natURL, e.clientId)
+	log.Println("Trying to connect with..........", e.clusterId, e.natURL, e.clientId)
 
 	if err != nil {
 		log.Println("Error connecting to the NATS Stream Server")
