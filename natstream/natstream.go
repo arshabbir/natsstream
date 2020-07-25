@@ -34,13 +34,8 @@ func NewMessageBroker() EventBus {
 
 	log.Println("NewMessageBroker : ", clientId)
 
-<<<<<<< HEAD
 	if clusterId == "" || natURL == "" {
 		log.Println("Set the Environment variable  NATSCLUSTER & NATURL")
-=======
-	if clusterId == "" {
-		log.Println("Set the Environment variable  NATSCLUSTER ")
->>>>>>> 709c1fbb27b81296576906342ab6b8407f979550
 		os.Exit(1)
 	}
 
@@ -58,6 +53,8 @@ func (e *eventBus) Connect() *error {
 		e.clientId,
 		stan.NatsURL(e.natURL),
 	)
+
+	log.Println("Trying to connect with ........", e.clusterId, e.natURL, e.clientId)
 
 	if err != nil {
 		log.Println("Error connecting to the NATS Stream Server")
