@@ -15,6 +15,7 @@ type eventBus struct {
 	scon      stan.Conn
 	clusterId string
 	clientId  string
+	natURL    string
 }
 
 type EventBus interface {
@@ -27,17 +28,18 @@ func NewMessageBroker() EventBus {
 
 	//connStr := os.Getenv("BUSCONNSTR")
 	clusterId := os.Getenv("NATSCLUSTER")
+	natURL := os.Getenv("NATURL")
 
 	clientId := fmt.Sprintf("client%d", rand.Intn(10000))
 
 	log.Println("NewMessageBroker : ", clientId)
 
-	if clusterId == "" {
-		log.Println("Set the Environment variable  NATSCLUSTER")
+	if clusterId == "" || natURL == "" {
+		log.Println("Set the Environment variable  NATSCLUSTER & NATURL")
 		os.Exit(1)
 	}
 
-	return &eventBus{clientId: clientId, clusterId: clusterId}
+	return &eventBus{clientId: clientId, clusterId: clusterId, natURL: natURL}
 
 }
 
@@ -49,7 +51,7 @@ func (e *eventBus) Connect() *error {
 	sc, err := stan.Connect(
 		e.clusterId,
 		e.clientId,
-		stan.NatsURL(stan.DefaultNatsURL),
+		stan.NatsURL(e.natURL),
 	)
 
 	if err != nil {

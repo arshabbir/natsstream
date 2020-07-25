@@ -13,6 +13,7 @@ func main() {
 
 	//wait := make(chan int)
 	os.Setenv("NATSCLUSTER", "test-cluster")
+	os.Setenv("NATURL", "nats://localhost:4222")
 
 	stream := natstream.NewMessageBroker()
 
