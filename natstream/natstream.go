@@ -36,7 +36,8 @@ func NewMessageBroker() EventBus {
 
 	if clusterId == "" || natURL == "" {
 		log.Println("Set the Environment variable  NATSCLUSTER & NATURL")
-		os.Exit(1)
+		return nil
+		//	os.Exit(1)
 	}
 
 	return &eventBus{clientId: clientId, clusterId: clusterId, natURL: natURL}
@@ -58,7 +59,8 @@ func (e *eventBus) Connect() *error {
 
 	if err != nil {
 		log.Println("Error connecting to the NATS Stream Server")
-		os.Exit(1)
+		return nil
+		//os.Exit(1)
 	}
 
 	e.scon = sc

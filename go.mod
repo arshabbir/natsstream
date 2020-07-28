@@ -1,5 +1,6 @@
 module github.com/arshabbir/natsstream
 
+   
 go 1.14
 
 require (
